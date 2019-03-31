@@ -42,11 +42,41 @@ def new_entry():
         return redirect(url_for('entries'))
     return render_template('new.html', form=form)
 
+@app.route('/entries/edit/<entryid>', methods=('GET', 'POST'))
+def edit_entry(entryid=None):
+    """ Edit entry """
+    entry = models.Entry.get(models.Entry.id == entryid)
+    form = forms.EntryForm()
+    if form.validate_on_submit():
+      models.Entry.update(title=form.title.data.strip(),
+                          date=form.date.data,
+                          time_spent=form.time_spent.data,
+                          learned=form.learned.data.strip(),
+                          resources=form.resources.data.strip()
+                          ).where(models.Entry.id == entryid).execute()
+      flash('Edit successful!!', 'success')
+      return redirect(url_for('entries'))
+
+    form.title.data = entry.title
+    form.date.data = entry.date
+    form.time_spent.data = entry.time_spent
+    form.learned.data = entry.learned
+    form.resources.data = entry.resources
+
+    return render_template('edit.html', form=form)
+
 @app.route('/details/<entryid>')
 def entry_details(entryid=None):
-    """Displaying journal entry with all fields"""
+    """ Displaying journal entry with all fields """
     entry = models.Entry.get(models.Entry.id == entryid)
     return render_template('detail.html', entry=entry)
+
+@app.route('/delete/<entryid>')
+def delete_entry(entryid=None):
+    """ Delete a journal entry """
+    models.Entry.delete().where(models.Entry.id == entryid).execute()
+    flash('Deleted successfully!!', 'successfully' )
+    return redirect(url_for('entries'))
 
 if __name__ == '__main__':
     models.initialize()
