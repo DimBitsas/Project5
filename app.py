@@ -6,7 +6,7 @@ import forms
 
 
 app = Flask(__name__)
-app.secret_key = "soemsecretkey312388"
+app.secret_key = "secretkey31238845645645"
 
 
 @app.before_request
@@ -75,9 +75,10 @@ def entry_details(entryid=None):
 def delete_entry(entryid=None):
     """ Delete a journal entry """
     models.Entry.delete().where(models.Entry.id == entryid).execute()
-    flash('Deleted successfully!!', 'successfully' )
+    flash('Deleted successfully!!', 'success' )
     return redirect(url_for('entries'))
 
 if __name__ == '__main__':
     models.initialize()
     app.run(debug=True)
+    

@@ -1,45 +1,21 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>MyJournal</title>
-        <link href="https://fonts.googleapis.com/css?family=Cousine:400" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Work+Sans:600" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="/static/css/normalize.css">
-        <link rel="stylesheet" href="/static/css/site.css">
-    </head>
-    <body>
-        <header>
-            <div class="container">
-                <div class="site-header">
-                    <a class="logo" href="{{ url_for('entries') }}"><i class="material-icons">library_books</i></a>
-                    <a class="button icon-right" href="{{ url_for('new_entry') }}"><span>New Entry</span> <i class="material-icons">add</i></a>
-                </div>
-            </div>
-        </header>
-        <section>
-            <div class="container">
-                <div class="entry-list">
-                    {% if entries %}
-                        <h1>List of entries</h1>
-                        {% for entry in entries %}
-                        <article>
-                            <h2><a href="{{ url_for('entry_details', entryid=entry.id) }}">{{entry.title}}</a></h2>
-                            <p>{{ entry.date }}</p>
-                        </article>
-                        {% endfor %}
-                    {% else %}
-                    <h1>No entries</h1>
-                    {% endif %} 
-                </div>
-            </div>
-        </section>
-        <footer>
-            <div>
-                &copy; MyJournal
-            </div>
-        </footer>
-    </body>
-</html>
+{% extends "layout.html" %}
+
+{% block title %}MyJournal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="entry-list">
+        {% if entries %}
+            <h1>List of entries</h1>
+            {% for entry in entries %}
+            <article>
+                <h2><a href="{{ url_for('entry_details', entryid=entry.id) }}">{{entry.title}}</a></h2>
+                <p>{{ entry.date }}</p>
+            </article>
+            {% endfor %}
+        {% else %}
+        <h1>No entries</h1>
+        {% endif %} 
+    </div>
+</div>
+{% endblock %}
